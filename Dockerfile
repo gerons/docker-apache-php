@@ -12,16 +12,20 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev
 
 # Configurar GD con soporte completo ANTES de instalarlo
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
+    --with-xpm \
+    && docker-php-ext-install -j$(nproc) gd
 
 # Instalar y habilitar las extensiones de PHP
-RUN docker-php-ext-install \
+RUN docker-php-ext-install -j$(nproc) \
     pgsql \
     mysqli \
     pdo \
     pdo_pgsql \
     pdo_mysql \
-    gd \
     curl
 
 # Configurar e instalar las extensiones que requieren pasos adicionales
