@@ -5,9 +5,14 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     libpng-dev \
     libjpeg-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
     libpq-dev \
     vim \
     libcurl4-openssl-dev
+
+# Configurar GD con soporte completo ANTES de instalarlo
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 # Instalar y habilitar las extensiones de PHP
 RUN docker-php-ext-install \
@@ -20,8 +25,7 @@ RUN docker-php-ext-install \
     curl
 
 # Configurar e instalar las extensiones que requieren pasos adicionales
-RUN docker-php-ext-configure gd --with-jpeg \
-    && pecl install redis-5.3.7 \
+RUN pecl install redis-5.3.7 \
     && pecl install xdebug-3.2.0
 
 # Habilitar las extensiones de PECL
