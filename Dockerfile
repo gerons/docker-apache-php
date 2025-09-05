@@ -1,0 +1,45 @@
+FROM php:8.2-apache
+
+# Instalar dependencias necesarias para las extensiones
+RUN apt-get update && apt-get install -y \
+    zlib1g-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libpq-dev \
+    vim \
+    libcurl4-openssl-dev
+
+# Instalar y habilitar las extensiones de PHP
+RUN docker-php-ext-install \
+    pgsql \
+    pdo \
+    pdo_mysql \
+    gd \
+    curl
+
+# Configurar e instalar las extensiones que requieren pasos adicionales
+RUN docker-php-ext-configure gd --with-jpeg \
+    && pecl install redis-5.3.7 \
+    && pecl install xdebug-3.2.0
+
+# Habilitar las extensiones de PECL
+RUN docker-php-ext-enable \
+    redis \
+    xdebug
+
+# no copia ningún archivo a la imagen
+# los archivos se vincularan desde docker-compose.yml
+
+# Exponer el puerto
+EXPOSE 80
+
+# Habilitar mod_rewrite
+RUN a2enmod rewrite
+
+# Configurar AllowOverride
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+
+# Copiar archivo de configuración de Xdebug
+COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+COPY start-container.sh /var/www/html/start-container.sh
