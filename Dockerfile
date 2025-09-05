@@ -9,15 +9,12 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libpq-dev \
     vim \
-    libcurl4-openssl-dev
+    libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Configurar GD con soporte completo ANTES de instalarlo
-RUN docker-php-ext-configure gd \
-    --with-freetype \
-    --with-jpeg \
-    --with-webp \
-    --with-xpm \
-    && docker-php-ext-install -j$(nproc) gd
+# Configurar e instalar GD (versión simplificada para PHP 8.2)
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install gd
 
 # Instalar y habilitar las extensiones de PHP
 RUN docker-php-ext-install -j$(nproc) \
