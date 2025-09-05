@@ -12,12 +12,12 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Configurar e instalar GD (versión simplificada para PHP 8.2)
+# Configurar e instalar GD
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install gd
 
 # Instalar y habilitar las extensiones de PHP
-RUN docker-php-ext-install -j$(nproc) \
+RUN docker-php-ext-install \
     pgsql \
     mysqli \
     pdo \
