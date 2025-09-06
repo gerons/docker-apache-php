@@ -1,5 +1,12 @@
 FROM php:8.2-apache
 
+# Crear archivo de configuración para cargas grandes
+RUN echo "upload_max_filesize = 20M" > /usr/local/etc/php/conf.d/99-uploads.ini && \
+    echo "post_max_size = 25M" >> /usr/local/etc/php/conf.d/99-uploads.ini && \
+    echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/99-uploads.ini && \
+    echo "max_input_time = 300" >> /usr/local/etc/php/conf.d/99-uploads.ini && \
+    echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/99-uploads.ini
+
 # Instalar dependencias necesarias para las extensiones
 RUN apt-get update && apt-get install -y \
     libpng-dev \
