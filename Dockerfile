@@ -44,6 +44,10 @@ RUN a2enmod rewrite
 # Configurar AllowOverride
 RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
+# Cambiar upload_max_filesize y también post_max_size (recomendado)
+RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 20M/' /usr/local/etc/php/php.ini-development && \
+    sed -i 's/post_max_size = 8M/post_max_size = 25M/' /usr/local/etc/php/php.ini-development
+
 # Copiar archivo de configuración de Xdebug
 COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
