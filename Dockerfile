@@ -30,6 +30,9 @@ RUN docker-php-ext-install \
     pdo_mysql \
     curl
 
+# Instalar Composer desde la imagen oficial
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 # Configurar e instalar las extensiones que requieren pasos adicionales
 RUN pecl install redis-5.3.7 \
     && pecl install xdebug-3.2.0
