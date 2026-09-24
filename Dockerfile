@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libxslt1-dev \
     vim \
-    libcurl4-openssl-dev
+    libcurl4-openssl-dev \
+    unzip
 
 # Configurar e instalar GD
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
