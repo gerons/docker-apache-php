@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     libpq-dev \
+    libxslt1-dev \
     vim \
     libcurl4-openssl-dev
 
@@ -28,7 +29,9 @@ RUN docker-php-ext-install \
     pdo \
     pdo_pgsql \
     pdo_mysql \
-    curl
+    curl \
+    xsl \
+    soap
 
 # Instalar Composer desde la imagen oficial
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
